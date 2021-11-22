@@ -301,7 +301,13 @@ ul.todo li .buttons .remove:hover{
 
 ul.todo li .buttons .complete{
   color: #aaa;
-  
+}
+
+ul.todo li .buttons .edit{
+  color: #aaa;
+}
+ul.todo li .buttons .edit:hover{
+  color: #FA396B;
 }
 
 ul.todo li .buttons .complete:hover{
@@ -327,4 +333,33 @@ ul.todo#completed li .buttons .complete .far{
 
 ul.todo#completed span{
   color: #25b99a;
+}
+
+.loading {
+  border: 16px solid white;
+  border-radius: 50%;
+  border-top: 16px solid red;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; 
+  animation: spin 2s linear infinite;
+
+  position: absolute;
+  top: 40%;
+  left: 50%;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#announce{
+  color: red;
+  font-size: 12px;
 }
