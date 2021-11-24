@@ -53,8 +53,7 @@ const renderData = (data) => {
                         <button class="edit" onclick="getTask(${item.id})">
                             <i class="fa fa-edit"></i>
                         </button>
-                        <button class="complete" 
-                        onclick="changeState(${item.id}, '${item.textTask}')">
+                        <button class="complete" onclick="changeState(${item.id}, '${item.textTask}', '${item.status}')">
                             <i class="far fa-check-circle"></i>
                             <i class="fas fa-check-circle"></i>
                       </button>
@@ -72,10 +71,10 @@ const renderData = (data) => {
                         <button class="remove" onclick="deleteTask(${item.id})">
                             <i class="fa fa-trash-alt"></i>
                         </button>
-                        <button class="edit" onclick="getTask(${item.id})">
+                        <button class="edit" onclick="getTask(${item.id}, '${item.status}')">
                             <i class="fa fa-edit"></i>
                         </button>
-                        <button class="complete">
+                        <button class="complete" onclick="changeState(${item.id}, '${item.textTask}', '${item.status}')">
                             <i class="far fa-check-circle"></i>
                             <i class="fas fa-check-circle"></i>
                       </button>
@@ -128,14 +127,14 @@ const addTask = () => {
 }
 window.addTask = addTask;
 
-const getTask = (id) => {
+const getTask = (id, status) => {
     const buttonUpdate =`
         <input
               id="newTask"
               type="text"
               placeholder="Enter an activity..."
         />
-        <button class="update" onclick="updateTask(${id})">
+        <button class="update" onclick="updateTask(${id},'${status}')">
             <i class="fa fa-check"></i>
         </button>
     `;
@@ -152,10 +151,10 @@ const getTask = (id) => {
 }
 window.getTask = getTask;
 
-const updateTask = (id) => {
+const updateTask = (id, status) => {
     const textTask = getEleID("newTask").value;
 
-    const taskObj = new Task("", textTask, "todo");
+    const taskObj = new Task("", textTask, status);
     // console.log(taskObj);
 
     service.updateTaskById(id, taskObj)
@@ -171,20 +170,22 @@ const updateTask = (id) => {
 }
 window.updateTask = updateTask;
 
-const changeState = (id, textTask) => {
-    const status = "completed";
-
+const changeState = async (id, textTask, status) => {
     const taskObj = new Task(id, textTask, status);
     // console.log(taskObj);
+    const taskDetail = await service.getTaskById(id);
+    
+    if (taskDetail.data.status == "todo"){
+        taskObj.status = "completed";   
+    }
+    if (taskDetail.data.status == "completed"){
+        taskObj.status = "todo";
+    }
+    // console.log(taskObj);
 
-    service.updateTaskStatus(id, taskObj)
-    .then((result) => {
-        // console.log(result);
+    const result = await service.updateTaskById(id, taskObj);
+    if(result.status == 200){
         fetchData();
-    })
-    .catch((error) => {
-        alert(error);
-    })
+    }
 }
 window.changeState = changeState;
-

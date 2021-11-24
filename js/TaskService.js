@@ -35,12 +35,4 @@ export default class TaskService{
             data: taskObj,
         });
     };
-
-    updateTaskStatus = (id, taskObj) => {
-        return axios({
-            url: `https://6183cae591d76c00172d1b53.mockapi.io/api/task/${id}`,
-            method: "PUT",
-            data: taskObj,
-        });
-    };
 }
