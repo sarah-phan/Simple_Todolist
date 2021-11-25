@@ -50,7 +50,7 @@ const renderData = (data) => {
                         <button class="remove" onclick="deleteTask(${item.id})">
                             <i class="fa fa-trash-alt"></i>
                         </button>
-                        <button class="edit" onclick="getTask(${item.id})">
+                        <button class="edit" onclick="getTask(${item.id}, '${item.status}', event)">
                             <i class="fa fa-edit"></i>
                         </button>
                         <button class="complete" onclick="changeState(${item.id}, '${item.textTask}', '${item.status}')">
@@ -71,7 +71,7 @@ const renderData = (data) => {
                         <button class="remove" onclick="deleteTask(${item.id})">
                             <i class="fa fa-trash-alt"></i>
                         </button>
-                        <button class="edit" onclick="getTask(${item.id}, '${item.status}')">
+                        <button class="edit" onclick="getTask(${item.id}, '${item.status}', event)">
                             <i class="fa fa-edit"></i>
                         </button>
                         <button class="complete" onclick="changeState(${item.id}, '${item.textTask}', '${item.status}')">
@@ -102,7 +102,9 @@ const deleteTask = (id) => {
 }
 window.deleteTask = deleteTask;
 
-const addTask = () => {
+const addTask = (event) => {
+    event.preventDefault();
+    
     const textTask = getEleID("newTask").value;
     
     let isValid = true;
@@ -127,14 +129,16 @@ const addTask = () => {
 }
 window.addTask = addTask;
 
-const getTask = (id, status) => {
+const getTask = (id, status, event) => {
+    event.preventDefault();
+    
     const buttonUpdate =`
         <input
               id="newTask"
               type="text"
               placeholder="Enter an activity..."
         />
-        <button class="update" onclick="updateTask(${id},'${status}')">
+        <button type="submit" class="update" onclick="updateTask(${id},'${status}', event)">
             <i class="fa fa-check"></i>
         </button>
     `;
@@ -151,7 +155,9 @@ const getTask = (id, status) => {
 }
 window.getTask = getTask;
 
-const updateTask = (id, status) => {
+const updateTask = (id, status, event) => {
+    event.preventDefault();
+
     const textTask = getEleID("newTask").value;
 
     const taskObj = new Task("", textTask, status);
